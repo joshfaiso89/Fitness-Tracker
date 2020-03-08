@@ -6,6 +6,8 @@ const path = require('path');
 
 const app = express();
 
+app.use(express.static('public'));
+
 app.use(logger('dev'));
 
 app.use(express.urlencoded({ extended: true }));
@@ -21,7 +23,7 @@ db.on("error", error => {
 });
 
 app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname + "./public/index.html"))
+    res.sendFile(path.join(__dirname + "/Develop/public/exercise.html"))
 });
 
 app.listen(3000, () => {
