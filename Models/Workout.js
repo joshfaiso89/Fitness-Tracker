@@ -1,13 +1,55 @@
+const mongoose = require("mongoose");
 
+const Schema = mongoose.Schema;
 
-import { Schema } from "mongoose";
+const WorkoutSchema = new Schema({
+    type: {
+        type: String,
+        trim: true
+    },
+    name: {
+        type: String,
+        trim: true
+    },
+    weight: {
+        type: Number,
+        trim: true
+    },
+    sets: {
+        type: Number,
+        trim: true
 
-const db = mongoose.createConnection('mongodb://host/db')
-  , fitnessTracker = db.model('fitnessTracker');
+    },
+    reps: {
+        type: Number,
+        trim: true
+    },
+    distance: {
+        type: Number,
+        trim: true
+    },
+    time: {
+        type: Number,
+        trim: true
+    },
+    date: {
+        type: Date,
+        default: Date.now
+    },
 
-const LastWorkout = Schema.LastWorkout({
-     LastWorkout = new LastWorkout {
-        name: String,
-
+    exercises: []
+}, {
+    toJSON: {
+        virtuals: true
     }
-})
+});
+
+WorkoutSchema.virtual("totalTime").get(function () {
+    return this.exercises.reduce((total, exercise) => {
+        return total + exercise.time;
+    }, 0);
+});
+
+const Workout = mongoose.model("Workout", WorkoutSchema);
+
+module.exports = Workout;
