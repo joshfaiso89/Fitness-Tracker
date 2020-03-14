@@ -13,9 +13,7 @@ app.use(express.urlencoded({
   extended: true
 }));
 
-app.listen(PORT, () => {
-    console.log(`APP is running on local host`);
-  });
+
 
 app.use(express.json());
 
@@ -40,10 +38,13 @@ app.get('/stats', (req,res) => {
   res.sendFile(path.join(__dirname + '/public/stats.html'));
 });
 
-app.get('api/workouts/range', (req,res) => {
+app.get('/api/workouts/range', (req,res) => {
+  
   db.Workout.find({}).then(data => {
+    console.log(data);
     res.json(data);
   }).catch(err => {
+   
     res.json(err);
   })
 })
@@ -67,3 +68,8 @@ app.post("/api/workouts", ({body}, res) => {
   });
 });
 
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workoutDb")
+
+app.listen(PORT, () => {
+  console.log(`APP is running on local host`);
+});
